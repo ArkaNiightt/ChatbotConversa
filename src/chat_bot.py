@@ -1,13 +1,13 @@
 import streamlit as st
 from utils_openai import retorna_resposta_modelo
-from utils import ler_mensagens, salvar_mensagens, listar_conversas, desconverte_nome_mensagem, ler_mensagem_por_nome_arquivo
+from utils import ler_mensagens, salvar_mensagens, listar_conversas, desconverte_nome_mensagem, ler_mensagem_por_nome_arquivo, load_avatar
 
 
 def initial():
     if not "mensagens" in st.session_state:
-        st.session_state.mensagens = []
+        st.session_state["mensagens"] = []
     if not "conversa_atual" in st.session_state:
-        st.session_state.conversa_atual = ""
+        st.session_state["conversa_atual"] = ""
 
 
 def pagina_principal():
@@ -23,11 +23,11 @@ def pagina_principal():
     prompt = st.chat_input("Digite sua mensagem...")
     if prompt:
         nova_mensagem = {"role": "user", "content": prompt}
-        chat = st.chat_message(nova_mensagem["role"])
+        chat = st.chat_message(nova_mensagem["role"], avatar=load_avatar("user_image.png"))
         chat.markdown(nova_mensagem["content"])
         mensagens.append(nova_mensagem)
 
-        chat = st.chat_message("assistant")
+        chat = st.chat_message("assistant", avatar=load_avatar("assistant_image.png"))
         placeholder = chat.empty()
         resposta_completa = ""
         placeholder.markdown("▌")
