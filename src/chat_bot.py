@@ -1,5 +1,5 @@
 import streamlit as st
-from def_openai import retorna_resposta_modelo
+from utils_openai import retorna_resposta_modelo
 from utils import ler_mensagens, salvar_mensagens, listar_conversas, desconverte_nome_mensagem, ler_mensagem_por_nome_arquivo
 
 
