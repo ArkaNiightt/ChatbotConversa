@@ -4,6 +4,13 @@ from utils import ler_mensagens, salvar_mensagens, listar_conversas, desconverte
 
 
 def initial():
+    st.set_page_config(
+        page_title="Chatbot com OpenAI",
+        page_icon="🤖",
+        layout="wide",
+        initial_sidebar_state="expanded"
+    )
+
     if not "mensagens" in st.session_state:
         st.session_state["mensagens"] = []
     if not "conversa_atual" in st.session_state:
@@ -14,7 +21,7 @@ def pagina_principal():
 
     mensagens = ler_mensagens(st.session_state["mensagens"])
 
-    st.header("🤖 Chatbot com OpenAI", divider=True)
+    st.header("🤖 Chatbot com OpenAI", divider=True, help="Converse com um assistente inteligente alimentado por OpenAI")
 
     for mensagem in mensagens:
         chat = st.chat_message(mensagem["role"])
