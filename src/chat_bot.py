@@ -3,10 +3,14 @@ from utils_openai import retorna_resposta_modelo
 from utils import ler_mensagens, salvar_mensagens, listar_conversas, desconverte_nome_mensagem, ler_mensagem_por_nome_arquivo
 
 
-def pagina_principal():
-
+def initial():
     if not "mensagens" in st.session_state:
         st.session_state.mensagens = []
+    if not "conversa_atual" in st.session_state:
+        st.session_state.conversa_atual = ""
+
+
+def pagina_principal():
 
     mensagens = ler_mensagens(st.session_state["mensagens"])
 
@@ -47,6 +51,7 @@ def seleciona_conversa(nome_arquivo):
     else:
         mensagem = ler_mensagem_por_nome_arquivo(nome_arquivo)
         st.session_state['mensagens'] = mensagem
+    st.session_state['conversa_atual'] = nome_arquivo
 
 def tab_conversas(tab):
 
@@ -58,15 +63,17 @@ def tab_conversas(tab):
     conversas = listar_conversas()
     for nome_arquivo in conversas:
         nome_mensagem = desconverte_nome_mensagem(nome_arquivo).capitalize()
-        if len(nome_mensagem) == 30:
+        if len(nome_mensagem) >= 30:
             nome_mensagem += '...'
         tab.button(nome_mensagem,
             on_click=seleciona_conversa,
             args=(nome_arquivo, ),
+            disabled=nome_arquivo == st.session_state['conversa_atual'],
             use_container_width=True)
 
 
 def main():
+    initial()
     pagina_principal()
     tab1, tab2 = st.sidebar.tabs(["Conversas", "Configurações"])
     tab_conversas(tab1)
